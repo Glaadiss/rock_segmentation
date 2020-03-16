@@ -26,7 +26,7 @@ def filter_background(areas):
 
 
 def group_by_area(areas):
-    result = [[] for i in range(groups_count)]
+    result = [[] for _ in range(groups_count)]
     for area in areas:
         for i in range(groups_count):
             if validators[i](area):

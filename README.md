@@ -12,7 +12,9 @@
     3. use distance transform operator to get regions surrounded by black edges
     4. use distance transform as base for thresholding to get foreground buffer
 3. Create markers based on received foreground buffer
-4. Use watershed algorithm to separate regions
+4. Remove markers that corresponds to dots or very small regions
+5. Subtract foreground regions from background regions.
+6. Use watershed algorithm to separate regions and fill unknown areas
     
  
 #### Requirments

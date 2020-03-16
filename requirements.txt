@@ -1,3 +1,4 @@
+matplotlib
 scikit-image
 numpy==1.18.1
 opencv-python==4.1.2.30

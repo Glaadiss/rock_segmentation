@@ -43,11 +43,3 @@ def get_fg_and_bg(img, scale=0.02):
         dist_transform, scale * dist_transform.max(), 255, 0)
     sure_fg = np.uint8(sure_fg)
     return sure_fg, sure_bg
-
-
-def get_markers(img, scale=0.02):
-    sure_fg, sure_bg = get_fg_and_bg(img, scale=scale)
-    n_labels, markers, stats, centroids = cv2.connectedComponentsWithStats(
-        sure_fg)
-
-    return n_labels, markers, stats, centroids

@@ -3,6 +3,13 @@ import cv2
 from preprocessing import get_fg_and_bg
 
 
+def remove_dots_markers(markers, stats, centroids):
+    for i, centroid in enumerate(centroids[1:], start=1):
+        area = stats[i, 4]
+        if area < 25:
+            markers[markers == i] = 0
+
+
 def watershed(img, gray) -> (np.ndarray, np.ndarray):
     """
     Watershed algorithm preceded by thresholding and background/foreground subtraction
@@ -20,10 +27,7 @@ def watershed(img, gray) -> (np.ndarray, np.ndarray):
     markers[unknown == 255] = 0
     colors = np.random.randint(0, 255, size=(n_labels, 3), dtype=np.uint8)
     colors[0] = [0, 0, 0]
-    for i, centroid in enumerate(centroids[1:], start=1):
-        area = stats[i, 4]
-        if area < 25:
-            markers[markers == i] = 0
+    remove_dots_markers(markers, stats, centroids)
 
     markers = cv2.watershed(img_copy, markers)
     img_copy[markers == -1] = [0, 0, 255]
