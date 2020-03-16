@@ -1,8 +1,6 @@
 import numpy as np
 import cv2
-from skimage import filters
 from skimage.segmentation import clear_border
-from skimage import img_as_ubyte
 
 kernel2 = np.ones((2, 2), np.uint8)
 kernel3 = np.ones((3, 3), np.uint8)
@@ -29,30 +27,6 @@ def crop_image(img_color):
     x0 = x0 - 50 if x0 > 150 else x0
     x1, y1 = coords.max(axis=0) + 1  # slices are exclusive at the top
     return copy[x0:x1, y0:y1], gray[x0:x1, y0:y1]
-
-
-def prepare_image(img):
-    opening_kernel = np.ones((11, 11), np.uint8)
-    res = cv2.Canny(img, 100, 200)
-    res = cv2.GaussianBlur(res, (15, 15), cv2.BORDER_DEFAULT)
-    ret, res = cv2.threshold(
-        res, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
-    res = cv2.dilate(res, opening_kernel, iterations=3)
-    res = cv2.erode(res, opening_kernel, iterations=5)
-
-    return cv2.subtract(img, res)
-
-
-def smooth(img):
-    magnitude_factor = 0.5
-    edge_roberts = img_as_ubyte(magnitude_factor * filters.roberts(img))
-    pipe = cv2.subtract(img, edge_roberts)
-    u = img.mean() * 0.2
-    std = img.std() * 0.5
-    local_std = 0.2 * cv2.GaussianBlur(img, (13, 13), cv2.BORDER_DEFAULT)
-    local_mean = 0.5 * cv2.blur(img, (13, 13))
-    T = img_as_ubyte(cv2.subtract(cv2.subtract(u, local_std), local_mean) / 256)
-    return cv2.subtract(pipe, T)
 
 
 def threshold(img):

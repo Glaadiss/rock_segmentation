@@ -4,6 +4,13 @@ from preprocessing import get_fg_and_bg
 
 
 def watershed(img, gray) -> (np.ndarray, np.ndarray):
+    """
+    Watershed algorithm preceded by thresholding and background/foreground subtraction
+
+    :param img: img in color
+    :param gray: gray version
+    :return: img with markers, markers
+    """
     img_copy, gray_copy = img.copy(), gray.copy()
     sure_fg, sure_bg = get_fg_and_bg(gray_copy, scale=0.1)
     unknown = cv2.subtract(sure_bg, sure_fg)
