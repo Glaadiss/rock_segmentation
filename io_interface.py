@@ -37,6 +37,7 @@ def get_paths(dirpath, file, output):
 def go_through_files(input_dir, output_dir):
     makedirs(output_dir, exist_ok=True)
     reports = []
+
     for (dirpath, dirnames, filenames) in walk(input_dir):
         for file in filenames:
             if file.endswith(IMG_FORMATS):
@@ -46,7 +47,3 @@ def go_through_files(input_dir, output_dir):
                 time.sleep(2)  # time.sleep required because of segmentation faults
                 calculate_size(file_path, img_output_path, histogram_path, reports)
     return reports
-
-
-save_reports_in_csv(get_report_path(), go_through_files())
-print('Report created!')
